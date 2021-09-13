@@ -13,9 +13,11 @@ document.body.appendChild( renderer.domElement );
 
 // CREATE CUBE
 
-//const geometry = new THREE.BoxGeometry(); // shape
-//const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } ); // color of cube
-//const cube = new THREE.Mesh( geometry, material ); // cube = shape and color
+// TODO
+// start by creating 3D array that contains rows, cols, faces of cube
+// try creating a cubie class and replicating what is done below but now
+// with a cubie object
+
 var cube = 
     new THREE.Mesh(
 	new THREE.BoxGeometry(1,1,1),
@@ -24,6 +26,15 @@ var cube =
 cube.position.y += 1;
 cube.receiveShadow = true;
 scene.add( cube );
+
+var cube2 = 
+    new THREE.Mesh(
+	new THREE.BoxGeometry(1,1,1),
+	new THREE.MeshPhongMaterial({color:0x00FF00, wireframe:false})
+);
+cube2.position.y += 2;
+cube2.receiveShadow = true;
+scene.add( cube2 );
 
 // fix camera position so we can see cube
 camera.position.z = 5;
