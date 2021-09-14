@@ -43,13 +43,16 @@ class Piece {
             new THREE.Mesh(
             new THREE.BoxGeometry(1,1,1),
             new THREE.MeshPhongMaterial({color:0xff4444, wireframe:false})
-        ); 
-                
-        cube.position.y = position;
+        );                 
+        cube.position.x = x_pos;
+        cube.position.y = y_pos;
+        cube.position.z = z_pos;        
         cube.receiveShadow = true;
         const edges = new THREE.EdgesGeometry( cube.geometry, 1 );
-        const line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0xffffff } ));
-        line.position.y = position; // moves edge outlines in sync with cubes
+        const line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0x000000 } ));
+        line.position.x = x_pos; 
+        line.position.y = y_pos; // moves edge outlines in sync with cubes
+        line.position.z = z_pos; 
         scene.add( line );
         scene.add( cube );
     } // createPiece
@@ -80,32 +83,30 @@ class Piece {
 
 } // Piece
 
-// use 3 nested for loops: create a new Piece(i = row, j = col, k = face)
+/////////////////////////////////////////////////////////////////////////
 
-let position = 1;
-var cubes = []; // stores Pieces objects
+// create the entire Rubiks cube (comprised of 27 Piece objects)
+var cubes = []; // stores Pieces (small cube elements) objects
 for (let i = 0; i < 3; i++) {
-    const cube = 
-        new THREE.Mesh(
-        new THREE.BoxGeometry(1,1,1),
-        new THREE.MeshPhongMaterial({color:0xff4444, wireframe:false})
-    ); 
-            
-    cube.position.y = position;
-    cube.receiveShadow = true;
-    const edges = new THREE.EdgesGeometry( cube.geometry, 1 );
-    const line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0xffffff } ));
-    line.position.y = position; // moves edge outlines in sync with cubes
-    scene.add( line );
-    scene.add( cube );
-
-    console.log('x-position: ' + line.position.x);
-    console.log('y-position: ' + line.position.y);
-    console.log('z-position: ' + line.position.z);
-
-    position++;
+    for (let j = 0; j < 3; j++) {
+        for (let k = 0; k < 3; k++) {
+            var cube = new Piece(i,j,k);
+            cube.createPiece(i,j,k);
+            //cube.setX(i);
+            //cube.setY(j);
+            //cube.setZ(k);
+            cubes.push(cube);
+        } // for
+    } // for
 } // for
 
+// testing
+/*for (let i = 0; i < cubes.length; i++) {
+    console.log('x: ' + cubes[i].getX());
+    console.log('y: ' + cubes[i].getY());
+    console.log('z: ' + cubes[i].getZ());
+}
+*/
 
 // fix camera position so we can see cube
 camera.position.z = 5;
