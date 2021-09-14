@@ -21,7 +21,7 @@ document.body.appendChild( renderer.domElement );
  * Contains the piece's face, row, and col locations.
  * There are 6 faces (made of 9 piece-faces) and 54 piece-faces
  * 
- * TODO make (child) classes for each type of cubie
+ * TODO make (child) classes for each type of cubie (?)
  */
 class Piece {
     constructor(x_pos, y_pos, z_pos) {
@@ -92,13 +92,14 @@ for (let i = 0; i < 3; i++) {
         for (let k = 0; k < 3; k++) {
             var cube = new Piece(i,j,k);
             cube.createPiece(i,j,k);
-            //cube.setX(i);
-            //cube.setY(j);
-            //cube.setZ(k);
             cubes.push(cube);
         } // for
     } // for
 } // for
+
+// create consts for colors (blue, green, orange, red, white and yellow)
+// assign cubes to type: corner, edge, center
+// asign colors to cubes depending on face
 
 // testing
 /*for (let i = 0; i < cubes.length; i++) {
