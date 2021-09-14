@@ -24,41 +24,66 @@ document.body.appendChild( renderer.domElement );
  * TODO make (child) classes for each type of cubie
  */
 class Piece {
-    constructor(face, row, col) {
-        this.face = face;
-        this.row = row;
-        this.col = col;
-    } // constructor
+    constructor(x_pos, y_pos, z_pos) {
+        this.x_pos = x_pos;
+        this.y_pos = y_pos;
+        this.z_pos = z_pos; 
+        this.position = 0; // used to update x,y,z points       
+    } // constructor 
+    
+    /**
+     * Creates a BoxGeometry with MeshPhongMaterial (helps with generating
+     * shadows). The x_pos, y_pos and z_pos are used to place the 
+     * geometry within the 3D graph (x,y,z).
+     * For now, all one solid color (light red) with the edges
+     * outlined in white.
+     */
+    createPiece(x_pos, y_pos, z_pos) {
+        const cube = 
+            new THREE.Mesh(
+            new THREE.BoxGeometry(1,1,1),
+            new THREE.MeshPhongMaterial({color:0xff4444, wireframe:false})
+        ); 
+                
+        cube.position.y = position;
+        cube.receiveShadow = true;
+        const edges = new THREE.EdgesGeometry( cube.geometry, 1 );
+        const line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0xffffff } ));
+        line.position.y = position; // moves edge outlines in sync with cubes
+        scene.add( line );
+        scene.add( cube );
+    } // createPiece
 
-    setFace(new_face) {
-        this.face = new_face;
-    } // setFace
+    setX(new_x_pos) {
+        this.x_pos = new_x_pos;
+    } // setX
+    
+    setY(new_y_pos) {
+        this.y_pos = new_y_pos;
+    } // setY
 
-    setRow(new_row) {
-        this.row = new_row;
-    } // setRow
+    setZ(new_z_pos) {
+        this.z_pos = new_z_pos;
+    } // setZ
 
-    setCol(new_col) {
-        this.col = new_col;
-    } // setCol
+    getX() {
+        return this.x_pos;
+    } // getX
+    
+    getY() {
+        return this.y_pos;
+    } // getY
 
-    getFace() {
-        return this.face;
-    } // getFace
-
-    getRow() {
-        return this.row;
-    } // getRow
-
-    getCol() {
-        return this.col;
-    } // getCol
+    getZ() {
+        return this.z_pos;
+    } // getZ
 
 } // Piece
 
 // use 3 nested for loops: create a new Piece(i = row, j = col, k = face)
 
 let position = 1;
+var cubes = []; // stores Pieces objects
 for (let i = 0; i < 3; i++) {
     const cube = 
         new THREE.Mesh(
@@ -73,6 +98,10 @@ for (let i = 0; i < 3; i++) {
     line.position.y = position; // moves edge outlines in sync with cubes
     scene.add( line );
     scene.add( cube );
+
+    console.log('x-position: ' + line.position.x);
+    console.log('y-position: ' + line.position.y);
+    console.log('z-position: ' + line.position.z);
 
     position++;
 } // for
