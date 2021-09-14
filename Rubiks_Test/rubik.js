@@ -15,26 +15,68 @@ document.body.appendChild( renderer.domElement );
 
 // TODO
 // start by creating 3D array that contains rows, cols, faces of cube
-// try creating a cubie class and replicating what is done below but now
-// with a cubie object
+/**
+ * A piece (of 16 - 6 center, 8 corner, 12 edge) of the
+ * entire rubiks cube.
+ * Contains the piece's face, row, and col locations.
+ * There are 6 faces (made of 9 piece-faces) and 54 piece-faces
+ * 
+ * TODO make (child) classes for each type of cubie
+ */
+class Piece {
+    constructor(face, row, col) {
+        this.face = face;
+        this.row = row;
+        this.col = col;
+    } // constructor
 
-var cube = 
-    new THREE.Mesh(
-	new THREE.BoxGeometry(1,1,1),
-	new THREE.MeshPhongMaterial({color:0xff4444, wireframe:false})
-);
-cube.position.y += 1;
-cube.receiveShadow = true;
-scene.add( cube );
+    setFace(new_face) {
+        this.face = new_face;
+    } // setFace
 
-var cube2 = 
-    new THREE.Mesh(
-	new THREE.BoxGeometry(1,1,1),
-	new THREE.MeshPhongMaterial({color:0x00FF00, wireframe:false})
-);
-cube2.position.y += 2;
-cube2.receiveShadow = true;
-scene.add( cube2 );
+    setRow(new_row) {
+        this.row = new_row;
+    } // setRow
+
+    setCol(new_col) {
+        this.col = new_col;
+    } // setCol
+
+    getFace() {
+        return this.face;
+    } // getFace
+
+    getRow() {
+        return this.row;
+    } // getRow
+
+    getCol() {
+        return this.col;
+    } // getCol
+
+} // Piece
+
+// use 3 nested for loops: create a new Piece(i = row, j = col, k = face)
+
+let position = 1;
+for (let i = 0; i < 3; i++) {
+    const cube = 
+        new THREE.Mesh(
+        new THREE.BoxGeometry(1,1,1),
+        new THREE.MeshPhongMaterial({color:0xff4444, wireframe:false})
+    ); 
+            
+    cube.position.y = position;
+    cube.receiveShadow = true;
+    const edges = new THREE.EdgesGeometry( cube.geometry, 1 );
+    const line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0xffffff } ));
+    line.position.y = position; // moves edge outlines in sync with cubes
+    scene.add( line );
+    scene.add( cube );
+
+    position++;
+} // for
+
 
 // fix camera position so we can see cube
 camera.position.z = 5;
