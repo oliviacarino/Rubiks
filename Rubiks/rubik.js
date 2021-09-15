@@ -74,7 +74,7 @@ class Piece {
 
         const cube = new THREE.Mesh(piece, materials);
         
-        // positioning of cube, shadow generation, positioning of lines
+        // positioning of cube, shadow generation, positioning of lines/edges
         cube.position.x = x_pos;
         cube.position.y = y_pos;
         cube.position.z = z_pos;        
@@ -129,15 +129,14 @@ for (let i = 0; i < 3; i++) {
     } // for
 } // for
 
-// TODO
+// TODO - still need ? 
 // create consts for colors (blue, green, orange, red, white and yellow)
 //const material_GREEN = new THREE.MeshPhongMaterial({color:0x00FF00, wireframe:false});
 
-
+// TODO 
 // IDEA: make array that stores cubes with their colors and piece type (corner, edge, center)
 // assign cubes to type: corner, edge, center
 // assign faces (F (front), B (back), R (right), L (left), D (down), U (up)) to rubiks cube
-
 
 
 // fix camera position so we can see cube
