@@ -13,8 +13,6 @@ document.body.appendChild( renderer.domElement );
 
 // CREATE CUBE
 
-// TODO
-// start by creating 3D array that contains rows, cols, faces of cube
 /**
  * A piece (of 16 - 6 center, 8 corner, 12 edge) of the
  * entire rubiks cube.
@@ -28,22 +26,55 @@ class Piece {
         this.x_pos = x_pos;
         this.y_pos = y_pos;
         this.z_pos = z_pos; 
-        this.position = 0; // used to update x,y,z points       
+        this.position = 0; // used to update x,y,z points   
+
+        // colors of each piece 
+        this.isGreen = true;
+        this.isWhite = true;
+        this.isBlue = true;
+        this.isRed = true;
+        this.isYellow = true;
+        this.isOrange = true;
+
+        // piece types
+        this.isCorner = true; // 3 colors, 3 faces
+        this.isEdge = true;   // 2 colors, 2 faces
+        this.isCenter = true; // 1 color,  1 face
     } // constructor 
     
     /**
      * Creates a BoxGeometry with MeshPhongMaterial (helps with generating
      * shadows). The x_pos, y_pos and z_pos are used to place the 
      * geometry within the 3D graph (x,y,z).
-     * For now, all one solid color (light red) with the edges
-     * outlined in white.
      */
     createPiece(x_pos, y_pos, z_pos) {
-        const cube = 
+        /*const cube = 
             new THREE.Mesh(
-            new THREE.BoxGeometry(1,1,1),
-            new THREE.MeshPhongMaterial({color:0xff4444, wireframe:false})
-        );                 
+            new THREE.BoxGeometry(1,1,1), // add toNonIndexed() for coloring faces ?? 
+            new THREE.MeshPhongMaterial({color:0xff4444, wireframe:false}) 
+        );
+        */
+        // TODO add proper shadowing -- current/above MeshPhongMaterial method too dark
+        const piece = new THREE.BoxGeometry(1,1,1);
+        const materials = [
+            new THREE.MeshBasicMaterial({color: 'white'}),
+            new THREE.MeshBasicMaterial({color: 'green'}),
+            new THREE.MeshBasicMaterial({color: 'blue'}),
+            new THREE.MeshBasicMaterial({color: 'red'}),
+            new THREE.MeshBasicMaterial({color: 'orange'}),
+            new THREE.MeshBasicMaterial({color: 'yellow'}),
+        ];
+        // apply colors to each side of cube using groups of faces 
+        piece.groups[0].materialIndex = 0;
+        piece.groups[1].materialIndex = 1;
+        piece.groups[2].materialIndex = 2;
+        piece.groups[3].materialIndex = 3;
+        piece.groups[4].materialIndex = 4;
+        piece.groups[5].materialIndex = 5;
+
+        const cube = new THREE.Mesh(piece, materials);
+        
+        // positioning of cube, shadow generation, positioning of lines
         cube.position.x = x_pos;
         cube.position.y = y_pos;
         cube.position.z = z_pos;        
@@ -55,6 +86,7 @@ class Piece {
         line.position.z = z_pos; 
         scene.add( line );
         scene.add( cube );
+
     } // createPiece
 
     setX(new_x_pos) {
@@ -97,17 +129,16 @@ for (let i = 0; i < 3; i++) {
     } // for
 } // for
 
+// TODO
 // create consts for colors (blue, green, orange, red, white and yellow)
-// assign cubes to type: corner, edge, center
-// asign colors to cubes depending on face
+//const material_GREEN = new THREE.MeshPhongMaterial({color:0x00FF00, wireframe:false});
 
-// testing
-/*for (let i = 0; i < cubes.length; i++) {
-    console.log('x: ' + cubes[i].getX());
-    console.log('y: ' + cubes[i].getY());
-    console.log('z: ' + cubes[i].getZ());
-}
-*/
+
+// IDEA: make array that stores cubes with their colors and piece type (corner, edge, center)
+// assign cubes to type: corner, edge, center
+// assign faces (F (front), B (back), R (right), L (left), D (down), U (up)) to rubiks cube
+
+
 
 // fix camera position so we can see cube
 camera.position.z = 5;
