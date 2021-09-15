@@ -58,11 +58,11 @@ class Piece {
         const piece = new THREE.BoxGeometry(1,1,1);
         const materials = [
             new THREE.MeshBasicMaterial({color: 'white'}),
-            new THREE.MeshBasicMaterial({color: 'green'}),
+            new THREE.MeshBasicMaterial({color: 'yellow'}),        
             new THREE.MeshBasicMaterial({color: 'blue'}),
-            new THREE.MeshBasicMaterial({color: 'red'}),
+            new THREE.MeshBasicMaterial({color: 'green'}),
             new THREE.MeshBasicMaterial({color: 'orange'}),
-            new THREE.MeshBasicMaterial({color: 'yellow'}),
+            new THREE.MeshBasicMaterial({color: 'red'})
         ];
         // apply colors to each side of cube using groups of faces 
         piece.groups[0].materialIndex = 0;
