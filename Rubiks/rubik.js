@@ -46,7 +46,7 @@ class Piece {
      * Creates a BoxGeometry with MeshPhongMaterial (helps with generating
      * shadows). The x_pos, y_pos and z_pos are used to place the 
      * geometry within the 3D graph (x,y,z).
-     */
+     */ 
     createPiece(x_pos, y_pos, z_pos) {
         /*const cube = 
             new THREE.Mesh(
