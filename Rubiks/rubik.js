@@ -22,7 +22,7 @@ document.body.appendChild( renderer.domElement );
  * TODO make (child) classes for each type of cubie (?)
  */
 class Piece {
-    constructor(x_pos, y_pos, z_pos) {
+    constructor(x_pos, y_pos, z_pos, face, color) {
         this.x_pos = x_pos;
         this.y_pos = y_pos;
         this.z_pos = z_pos; 
@@ -36,10 +36,14 @@ class Piece {
         this.isYellow = true;
         this.isOrange = true;
 
-        // piece types
-        this.isCorner = true; // 3 colors, 3 faces
-        this.isEdge = true;   // 2 colors, 2 faces
-        this.isCenter = true; // 1 color,  1 face
+        // face types for each cube (corner: 3 faces, edge: 2 faces, center: 1 face)
+        // (F (front), B (back), R (right), L (left), D (down), U (up)
+        this.faceType = this.faceType;
+
+        // piece color
+        // White, Blue, Green, Orange, Yellow, Red
+        this.color = color;
+
     } // constructor 
     
     /**
@@ -47,7 +51,7 @@ class Piece {
      * shadows). The x_pos, y_pos and z_pos are used to place the 
      * geometry within the 3D graph (x,y,z).
      */ 
-    createPiece(x_pos, y_pos, z_pos) {
+    createPiece(x_pos, y_pos, z_pos, color) {
         /*const cube = 
             new THREE.Mesh(
             new THREE.BoxGeometry(1,1,1), // add toNonIndexed() for coloring faces ?? 
@@ -55,8 +59,8 @@ class Piece {
         );
         */
         // TODO add proper shadowing -- current/above MeshPhongMaterial method too dark
-        const piece = new THREE.BoxGeometry(1,1,1);
-        const materials = [
+        const piece = new THREE.BoxGeometry(1,1,1).toNonIndexed();
+        /*const materials = [
             new THREE.MeshBasicMaterial({color: 'white'}),
             new THREE.MeshBasicMaterial({color: 'yellow'}),        
             new THREE.MeshBasicMaterial({color: 'blue'}),
@@ -64,15 +68,59 @@ class Piece {
             new THREE.MeshBasicMaterial({color: 'orange'}),
             new THREE.MeshBasicMaterial({color: 'red'})
         ];
+        */
+        const material = new THREE.MeshBasicMaterial( { vertexColors: true } );
+
+        // generate color data for each vertex
+        const positionAttribute = piece.getAttribute( 'position' );
+        
+        const colors = []; // what dis do?
+		const colorRed = new THREE.Color(0xff0000);
+        const colorWhite = new THREE.Color(0xffffff);
+        const colorBlue = new THREE.Color();
+        const colorGreen = new THREE.Color();
+        const colorOrange = new THREE.Color();
+        const colorYellow = new THREE.Color();
+
+        if (color == 'red') {
+            // set all sides of one cube red
+            // TODO set color depending on face type
+            for ( let i = 0; i < positionAttribute.count; i += 3) {
+                // define the same color for each vertex of a triangle
+                colors.push( colorRed.r, colorRed.g, colorRed.b );
+                colors.push( colorRed.r, colorRed.g, colorRed.b );
+                colors.push( colorRed.r, colorRed.g, colorRed.b );
+            } // for
+
+            // define the new attribute
+            piece.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
+        } // if
+
+        if (color == 'white') {
+            // set all sides white of one cube white
+            // TODO set color depending on face type
+            for ( let i = 0; i < positionAttribute.count; i += 3) {
+                // define the same color for each vertex of a triangle
+                colors.push( colorWhite.r, colorWhite.g, colorWhite.b );
+                colors.push( colorWhite.r, colorWhite.g, colorWhite.b );
+                colors.push( colorWhite.r, colorWhite.g, colorWhite.b );
+            } // for
+
+            // define the new attribute
+            piece.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
+        } // if
+
         // apply colors to each side of cube using groups of faces 
-        piece.groups[0].materialIndex = 0;
+        /*piece.groups[0].materialIndex = 0;
         piece.groups[1].materialIndex = 1;
         piece.groups[2].materialIndex = 2;
         piece.groups[3].materialIndex = 3;
         piece.groups[4].materialIndex = 4;
         piece.groups[5].materialIndex = 5;
+        */
 
-        const cube = new THREE.Mesh(piece, materials);
+        //const cube = new THREE.Mesh(piece, materials);
+        const cube = new THREE.Mesh(piece, material);
         
         // positioning of cube, shadow generation, positioning of lines/edges
         cube.position.x = x_pos;
@@ -123,11 +171,12 @@ for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
         for (let k = 0; k < 3; k++) {
             var cube = new Piece(i,j,k);
-            cube.createPiece(i,j,k);
+            cube.createPiece(i,j,k,'red');// change color per side
             cubes.push(cube);
         } // for
     } // for
 } // for
+
 
 // TODO - still need ? 
 // create consts for colors (blue, green, orange, red, white and yellow)
