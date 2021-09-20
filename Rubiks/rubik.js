@@ -36,11 +36,10 @@ class Piece {
         this.isYellow = true;
         this.isOrange = true;
 
-        // face types for each cube (corner: 3 faces, edge: 2 faces, center: 1 face)
-        // (F (front), B (back), R (right), L (left), D (down), U (up)
-        this.faceType = this.faceType;
+        // Piece is a corner (3 colors), edge (2 colors), or center (1 color).
+        this.pieceType = this.pieceType; 
 
-        // piece color
+        // Piece color
         // White, Blue, Green, Orange, Yellow, Red
         this.color = color;
 
@@ -161,26 +160,68 @@ class Piece {
         return this.z_pos;
     } // getZ
 
+    /**
+     * Sets the Piece's type (corner, edge, or center).
+     * Helps with setting color of side(s) for each
+     * Piece (e.g., corner piece has 3 colors, edge
+     * has 2 colors, center has 1 color).
+     */
+    setPieceType(type) {
+        pieceType = type;
+        let corner = false;
+        let edge = false;
+        let center = false;
+
+        if (this.pieceType === 'corner') {
+            corner = true;
+        } else if (this.pieceType === 'edge') {
+            edge = true;
+        } else if (this.pieceType === 'center') {
+            center = true;
+        } // if
+
+    } // setPieceType
+
+    getPieceType() {
+        return this.pieceType;
+    } // getPieceType
+
 } // Piece
 
 /////////////////////////////////////////////////////////////////////////
 
 // create the entire Rubiks cube (comprised of 27 Piece objects)
+// ALL CUBES ARE RED FOR NOW
 var cubes = []; // stores Pieces (small cube elements) objects
 for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
         for (let k = 0; k < 3; k++) {
             var cube = new Piece(i,j,k);
-            cube.createPiece(i,j,k,'red');// change color per side
+            cube.createPiece(i,j,k,'red');// change to color per side
             cubes.push(cube);
         } // for
     } // for
 } // for
 
+// sets one cube one entire color
+for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+        for (let k = 0; k < 3; k++) {
+            if (i == 0 && j == 0 && k == 0) {
+                cube.createPiece(i,j,k,'white');
+            } // if
+        } // for
+    } // for
+} // for
 
-// TODO - still need ? 
-// create consts for colors (blue, green, orange, red, white and yellow)
-//const material_GREEN = new THREE.MeshPhongMaterial({color:0x00FF00, wireframe:false});
+// CORNER CUBES (x,y,z) -- use for setCorner()
+// 0 0 0
+
+// EDGE CUBES (x,y,z) -- use for setEdge()
+//
+
+// CENTER CUBES (x,y,z) -- use for setCenter()
+//
 
 // TODO 
 // IDEA: make array that stores cubes with their colors and piece type (corner, edge, center)
