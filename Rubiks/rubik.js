@@ -55,7 +55,7 @@ class Cubie {
      * geometry within the 3D graph (x,y,z).
      */ 
     //createPiece(x_pos, y_pos, z_pos, color) {
-    createPiece(x_pos, y_pos, z_pos) {
+    createPiece(x_pos, y_pos, z_pos, piece_type) {
         /*const cube = 
             new THREE.Mesh(
             new THREE.BoxGeometry(1,1,1), // add toNonIndexed() for coloring faces ?? 
@@ -89,8 +89,155 @@ class Cubie {
 
         const color = new THREE.Color();
 
+        if (piece_type == 'corner') { // have 3 faces
+            // check which of 8 corners
+            // CORNER CUBES (x,y,z) -- use for setCorner() --- B=back, F=front, D=bottom, T=top, R=right, L=left,             
+            // Front corners: DFL(0 0 2), DFR(2 0 2), TFL(0 2 2), TFR(2 2 2)
+
+            // Back corners:  DBL(0 0 0), DBR(2 0 0), TBL(0 2 0), TBR(2 2 0)
+            // DBL(0 0 0)
+            if (x_pos == 0 && y_pos == 0 && z_pos == 0) { 
+                for (let i = 0; i < positionAttribute.count; i += 6) {
+                    if (i == 30) {                        
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                    } else if (i == 6) {
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                    } else if (i == 18) {
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                    } else {
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                    }
+                }
+            } 
+            // DBR(2 0 0)
+            else if (x_pos == 2 && y_pos == 0 && z_pos == 0) { 
+                for (let i = 0; i < positionAttribute.count; i += 6) {
+                    if (i == 18) {
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                    } else if (i == 30) {
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                    } else if (i == 0) {
+                        colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+                        colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+                        colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+                        colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+                        colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+                        colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+                    } else {
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                    }
+                }
+            }
+            // TBL(0 2 0)
+            if (x_pos == 0 && y_pos == 2 && z_pos == 0) {
+                for (let i = 0; i < positionAttribute.count; i += 6) {
+                    if (i == 6) {
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                    } else if (i == 12) {
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                    } else if (i == 30) {
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                    } else {
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                    }
+                }
+            }
+            // TBR(2 2 0)
+            else if (x_pos == 2 && y_pos == 2 && z_pos == 0) {
+                for (let i = 0; i < positionAttribute.count; i += 6) {
+                    if (i == 0) {
+                        colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+                        colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+                        colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+                        colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+                        colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+                        colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+                    } else if (i == 12) {
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                    } else if (i == 30) {
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                    } else {
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                    }
+                }
+            }
+
+            // Front corners: DFL(0 0 2), DFR(2 0 2), TFL(0 2 2), TFR(2 2 2)
+            
+        }
+
         // *general* - color a cube with each side being a color
-        for (let i = 0; i < positionAttribute.count; i += 6) {
+        /*for (let i = 0; i < positionAttribute.count; i += 6) {
             //console.log("count: " + i);
             if (i == 0) {
                 colors.push(colorRed.r, colorRed.g, colorRed.b);
@@ -135,7 +282,7 @@ class Cubie {
                 colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
                 colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
             }
-        } // for
+        } // for*/
         piece.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
         // old way of coloring faces -- only one color for all sides
@@ -265,8 +412,13 @@ class Cubie {
 
 // Attempt at coloring invididual faces via RubiksCube constructor
 let cube = new Cubie();
+cube.createPiece(0, 0, 0, 'corner'); // back, bottom, left
+cube.createPiece(2, 0, 0, 'corner'); // back, bottom, right
+cube.createPiece(0, 2, 0, 'corner'); // back, top, left
+cube.createPiece(2, 2, 0, 'corner'); // back, top, right
+
 // back corners
-cube.createPiece(0,0,0); // back, bottom, left
+/*cube.createPiece(0,0,0); // back, bottom, left
 cube.createPiece(2,0,0); // back, bottom, right
 cube.createPiece(0,2,0); // back, top, left
 cube.createPiece(2,2,0); // back, top, right
@@ -276,6 +428,7 @@ cube.createPiece(0,0,2); // front, bottom, left
 cube.createPiece(2,0,2); // front, bottom, right
 cube.createPiece(0,2,2); // front, top, left
 cube.createPiece(2,2,2); // front, top, right
+*/
 
 // CORNER CUBES (x,y,z) -- use for setCorner() --- B=back, F=front, D=bottom, T=top, R=right, L=left, 
 // Back corners:  DBL(0 0 0), DBR(2 0 0), TBL(0 2 0), TBR(2 2 0)
