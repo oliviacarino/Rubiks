@@ -21,7 +21,7 @@ document.body.appendChild( renderer.domElement );
  * 
  * TODO make (child) classes for each Cubie (smaller cubes within the Rubiks cube)
  */
-class RubiksCube { 
+class Cubie { 
     //constructor(x_pos, y_pos, z_pos, face, color) {
     constructor(x_pos, y_pos, z_pos, colors) {
         this.x_pos = x_pos;
@@ -54,7 +54,8 @@ class RubiksCube {
      * shadows). The x_pos, y_pos and z_pos are used to place the 
      * geometry within the 3D graph (x,y,z).
      */ 
-    createPiece(x_pos, y_pos, z_pos, color) {
+    //createPiece(x_pos, y_pos, z_pos, color) {
+    createPiece(x_pos, y_pos, z_pos) {
         /*const cube = 
             new THREE.Mesh(
             new THREE.BoxGeometry(1,1,1), // add toNonIndexed() for coloring faces ?? 
@@ -81,11 +82,64 @@ class RubiksCube {
 		const colorRed = new THREE.Color(0xff0000);
         const colorWhite = new THREE.Color(0xffffff);
         const colorBlue = new THREE.Color(0x0000FF);
-        const colorGreen = new THREE.Color();
-        const colorOrange = new THREE.Color();
-        const colorYellow = new THREE.Color();
+        const colorGreen = new THREE.Color(0x00FF00);
+        const colorOrange = new THREE.Color(0xFFA500);
+        const colorYellow = new THREE.Color(0xFFFF00);
+        const colorBlack = new THREE.Color(0x000000); // use for inner cubes that do not have colored face user sees
 
-        if (color == 'red') {
+        const color = new THREE.Color();
+
+        // *general* - color a cube with each side being a color
+        for (let i = 0; i < positionAttribute.count; i += 6) {
+            //console.log("count: " + i);
+            if (i == 0) {
+                colors.push(colorRed.r, colorRed.g, colorRed.b);
+                colors.push(colorRed.r, colorRed.g, colorRed.b);
+                colors.push(colorRed.r, colorRed.g, colorRed.b);
+                colors.push(colorRed.r, colorRed.g, colorRed.b);
+                colors.push(colorRed.r, colorRed.g, colorRed.b);
+                colors.push(colorRed.r, colorRed.g, colorRed.b);
+            } else if (i == 6) {
+                colors.push(colorWhite.r, colorWhite.g, colorWhite.b);
+                colors.push(colorWhite.r, colorWhite.g, colorWhite.b);
+                colors.push(colorWhite.r, colorWhite.g, colorWhite.b);
+                colors.push(colorWhite.r, colorWhite.g, colorWhite.b);
+                colors.push(colorWhite.r, colorWhite.g, colorWhite.b);
+                colors.push(colorWhite.r, colorWhite.g, colorWhite.b);
+            } else if (i == 12) {
+                colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+                colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+                colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+                colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+                colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+                colors.push(colorBlue.r, colorBlue.g, colorBlue.b);
+            } else if (i == 18) {
+                colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+            } else if (i == 24) {
+                colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+            } else {
+                colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+            }
+        } // for
+        piece.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+        // old way of coloring faces -- only one color for all sides
+        /*if (color == 'red') {
             // set all sides of one cube red
             // TODO set color depending on face type
             for ( let i = 0; i < positionAttribute.count; i += 3) {
@@ -97,7 +151,7 @@ class RubiksCube {
 
             // define the new attribute
             piece.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
-        } // if
+        } // if        
 
         if (color == 'white') {
             // TODO set color depending on face type 
@@ -111,20 +165,12 @@ class RubiksCube {
             // define the new attribute
             piece.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
         } // if
-        
-        // apply colors to each side of cube using groups of faces 
-        /*piece.groups[0].materialIndex = 0;
-        piece.groups[1].materialIndex = 1;
-        piece.groups[2].materialIndex = 2;
-        piece.groups[3].materialIndex = 3;
-        piece.groups[4].materialIndex = 4;
-        piece.groups[5].materialIndex = 5;
         */
 
         //const cube = new THREE.Mesh(piece, materials);
         const cube = new THREE.Mesh(piece, material);
         
-        // positioning of cube, shadow generation, positioning of lines/edges
+        // positioning of cube in scene, shadow generation, positioning of lines/edges
         cube.position.x = x_pos;
         cube.position.y = y_pos;
         cube.position.z = z_pos;        
@@ -218,7 +264,18 @@ class RubiksCube {
 // } // for
 
 // Attempt at coloring invididual faces via RubiksCube constructor
-let rubiks = new RubiksCube();
+let cube = new Cubie();
+// back corners
+cube.createPiece(0,0,0); // back, bottom, left
+cube.createPiece(2,0,0); // back, bottom, right
+cube.createPiece(0,2,0); // back, top, left
+cube.createPiece(2,2,0); // back, top, right
+
+// front corners
+cube.createPiece(0,0,2); // front, bottom, left
+cube.createPiece(2,0,2); // front, bottom, right
+cube.createPiece(0,2,2); // front, top, left
+cube.createPiece(2,2,2); // front, top, right
 
 // CORNER CUBES (x,y,z) -- use for setCorner() --- B=back, F=front, D=bottom, T=top, R=right, L=left, 
 // Back corners:  DBL(0 0 0), DBR(2 0 0), TBL(0 2 0), TBR(2 2 0)
