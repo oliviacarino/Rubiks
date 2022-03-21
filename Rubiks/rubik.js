@@ -19,9 +19,9 @@ document.body.appendChild( renderer.domElement );
  * Contains the piece's face, row, and col locations.
  * There are 6 faces (made of 9 piece-faces) and 54 piece-faces
  * 
- * TODO make (child) classes for each type of cubie (?)
+ * TODO make (child) classes for each Cubie (smaller cubes within the Rubiks cube)
  */
-class Piece {
+class RubiksCube { 
     //constructor(x_pos, y_pos, z_pos, face, color) {
     constructor(x_pos, y_pos, z_pos, colors) {
         this.x_pos = x_pos;
@@ -31,7 +31,6 @@ class Piece {
 
         // colors of a cubie (Piece) is an array of faces
         // set each face to corresponding Colors in colors
-        
 
         // colors of each piece 
         /*this.isGreen = color;
@@ -196,27 +195,30 @@ class Piece {
 
 // create the entire Rubiks cube (comprised of 27 Piece objects)
 // ALL CUBES ARE RED FOR NOW
-var cubes = []; // stores Pieces (small cube elements) objects
-for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
-        for (let k = 0; k < 3; k++) {
-            var cube = new Piece(i,j,k);
-            cube.createPiece(i,j,k,'red');// change to color per side
-            cubes.push(cube);
-        } // for
-    } // for
-} // for
+// var cubes = []; // stores Pieces (small cube elements) objects
+// for (let i = 0; i < 3; i++) {
+//     for (let j = 0; j < 3; j++) {
+//         for (let k = 0; k < 3; k++) {
+//             var cube = new Piece(i,j,k);
+//             cube.createPiece(i,j,k,'red');// change to color per side
+//             cubes.push(cube);
+//         } // for
+//     } // for
+// } // for
 
-// sets ONE cube one entire color
-for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
-        for (let k = 0; k < 3; k++) {
-            if (i == 0 && j == 2 && k == 0) {
-                cube.createPiece(i,j,k,'white');
-            } // if
-        } // for
-    } // for
-} // for
+// // sets ONE cube one entire color
+// for (let i = 0; i < 3; i++) {
+//     for (let j = 0; j < 3; j++) {
+//         for (let k = 0; k < 3; k++) {
+//             if (i == 0 && j == 2 && k == 0) {
+//                 cube.createPiece(i,j,k,'white');
+//             } // if
+//         } // for
+//     } // for
+// } // for
+
+// Attempt at coloring invididual faces via RubiksCube constructor
+let rubiks = new RubiksCube();
 
 // CORNER CUBES (x,y,z) -- use for setCorner() --- B=back, F=front, D=bottom, T=top, R=right, L=left, 
 // Back corners:  DBL(0 0 0), DBR(2 0 0), TBL(0 2 0), TBR(2 2 0)
