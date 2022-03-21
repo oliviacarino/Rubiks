@@ -22,26 +22,31 @@ document.body.appendChild( renderer.domElement );
  * TODO make (child) classes for each type of cubie (?)
  */
 class Piece {
-    constructor(x_pos, y_pos, z_pos, face, color) {
+    //constructor(x_pos, y_pos, z_pos, face, color) {
+    constructor(x_pos, y_pos, z_pos, colors) {
         this.x_pos = x_pos;
         this.y_pos = y_pos;
         this.z_pos = z_pos; 
         this.position = 0; // used to update x,y,z points   
 
+        // colors of a cubie (Piece) is an array of faces
+        // set each face to corresponding Colors in colors
+        
+
         // colors of each piece 
-        this.isGreen = true;
-        this.isWhite = true;
-        this.isBlue = true;
-        this.isRed = true;
-        this.isYellow = true;
-        this.isOrange = true;
+        /*this.isGreen = color;
+        this.isWhite = color;
+        this.isBlue = color;
+        this.isRed = color;
+        this.isYellow = color;
+        this.isOrange = color;*/
 
         // Piece is a corner (3 colors), edge (2 colors), or center (1 color).
-        this.pieceType = this.pieceType; 
+        //this.pieceType = this.pieceType; 
 
         // Piece color
         // White, Blue, Green, Orange, Yellow, Red
-        this.color = color;
+        //this.color = color;
 
     } // constructor 
     
@@ -76,7 +81,7 @@ class Piece {
         const colors = []; // what dis do?
 		const colorRed = new THREE.Color(0xff0000);
         const colorWhite = new THREE.Color(0xffffff);
-        const colorBlue = new THREE.Color();
+        const colorBlue = new THREE.Color(0x0000FF);
         const colorGreen = new THREE.Color();
         const colorOrange = new THREE.Color();
         const colorYellow = new THREE.Color();
@@ -96,9 +101,8 @@ class Piece {
         } // if
 
         if (color == 'white') {
-            // set all sides white of one cube white
-            // TODO set color depending on face type
-            for ( let i = 0; i < positionAttribute.count; i += 3) {
+            // TODO set color depending on face type 
+            for ( let i = 0; i < positionAttribute.count; i += 3 ) {
                 // define the same color for each vertex of a triangle
                 colors.push( colorWhite.r, colorWhite.g, colorWhite.b );
                 colors.push( colorWhite.r, colorWhite.g, colorWhite.b );
@@ -108,7 +112,7 @@ class Piece {
             // define the new attribute
             piece.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
         } // if
-
+        
         // apply colors to each side of cube using groups of faces 
         /*piece.groups[0].materialIndex = 0;
         piece.groups[1].materialIndex = 1;
@@ -203,19 +207,21 @@ for (let i = 0; i < 3; i++) {
     } // for
 } // for
 
-// sets one cube one entire color
+// sets ONE cube one entire color
 for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
         for (let k = 0; k < 3; k++) {
-            if (i == 0 && j == 0 && k == 0) {
+            if (i == 0 && j == 2 && k == 0) {
                 cube.createPiece(i,j,k,'white');
             } // if
         } // for
     } // for
 } // for
 
-// CORNER CUBES (x,y,z) -- use for setCorner()
-// 0 0 0
+// CORNER CUBES (x,y,z) -- use for setCorner() --- B=back, F=front, D=bottom, T=top, R=right, L=left, 
+// Back corners:  DBL(0 0 0), DBR(2 0 0), TBL(0 2 0), TBR(2 2 0)
+// Front corners: DFL(0 0 2), DFR(2 0 2), TFL(0 2 2), TFR(2 2 2)
+
 
 // EDGE CUBES (x,y,z) -- use for setEdge()
 //
