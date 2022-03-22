@@ -28,25 +28,6 @@ class Cubie {
         this.y_pos = y_pos;
         this.z_pos = z_pos; 
         this.position = 0; // used to update x,y,z points   
-
-        // colors of a cubie (Piece) is an array of faces
-        // set each face to corresponding Colors in colors
-
-        // colors of each piece 
-        /*this.isGreen = color;
-        this.isWhite = color;
-        this.isBlue = color;
-        this.isRed = color;
-        this.isYellow = color;
-        this.isOrange = color;*/
-
-        // Piece is a corner (3 colors), edge (2 colors), or center (1 color).
-        //this.pieceType = this.pieceType; 
-
-        // Piece color
-        // White, Blue, Green, Orange, Yellow, Red
-        //this.color = color;
-
     } // constructor 
     
     /**
@@ -54,31 +35,15 @@ class Cubie {
      * shadows). The x_pos, y_pos and z_pos are used to place the 
      * geometry within the 3D graph (x,y,z).
      */ 
-    //createPiece(x_pos, y_pos, z_pos, color) {
     createPiece(x_pos, y_pos, z_pos, piece_type) {
-        /*const cube = 
-            new THREE.Mesh(
-            new THREE.BoxGeometry(1,1,1), // add toNonIndexed() for coloring faces ?? 
-            new THREE.MeshPhongMaterial({color:0xff4444, wireframe:false}) 
-        );
-        */
         // TODO add proper shadowing -- current/above MeshPhongMaterial method too dark
         const piece = new THREE.BoxGeometry(1,1,1).toNonIndexed();
-        /*const materials = [
-            new THREE.MeshBasicMaterial({color: 'white'}),
-            new THREE.MeshBasicMaterial({color: 'yellow'}),        
-            new THREE.MeshBasicMaterial({color: 'blue'}),
-            new THREE.MeshBasicMaterial({color: 'green'}),
-            new THREE.MeshBasicMaterial({color: 'orange'}),
-            new THREE.MeshBasicMaterial({color: 'red'})
-        ];
-        */
         const material = new THREE.MeshBasicMaterial( { vertexColors: true } );
 
         // generate color data for each vertex
         const positionAttribute = piece.getAttribute( 'position' );
         
-        const colors = []; // what dis do?
+        const colors = []; 
 		const colorRed = new THREE.Color(0xff0000);
         const colorWhite = new THREE.Color(0xffffff);
         const colorBlue = new THREE.Color(0x0000FF);
@@ -88,11 +53,10 @@ class Cubie {
         const colorBlack = new THREE.Color(0x000000); // use for inner cubes that do not have colored face user sees
 
         const color = new THREE.Color();
-
+        
+        // TODO - refactor below code b/c this is way too long lol
         if (piece_type == 'corner') { // have 3 faces
-            // check which of 8 corners
             // CORNER CUBES (x,y,z) -- use for setCorner() --- B=back, F=front, D=bottom, T=top, R=right, L=left,             
-            // Front corners: DFL(0 0 2), DFR(2 0 2), TFL(0 2 2), TFR(2 2 2)
 
             // Back corners:  DBL(0 0 0), DBR(2 0 0), TBL(0 2 0), TBR(2 2 0)
             // DBL(0 0 0)
@@ -697,6 +661,7 @@ class Cubie {
                 }
             } 
         } 
+
         // CENTER PIECES
         else if (piece_type == 'center') {
             // (1 1 2)
@@ -739,6 +704,86 @@ class Cubie {
                     }
                 }
             }
+            // (1 2 1)
+            else if (x_pos == 1 && y_pos == 2 && z_pos == 1) {
+                for (let i = 0; i < positionAttribute.count; i += 6) {
+                    if (i == 12) {
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                        colors.push(colorOrange.r, colorOrange.g, colorOrange.b);
+                    } else {
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                    }
+                }
+            }
+            // (1 1 0)
+            else if (x_pos == 1 && y_pos == 1 && z_pos == 0) {
+                for (let i = 0; i < positionAttribute.count; i += 6) {
+                    if (i == 30) {
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                        colors.push(colorYellow.r, colorYellow.g, colorYellow.b);
+                    } else {
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                    }
+                }
+            }
+            // (0 1 1)
+            else if (x_pos == 0 && y_pos == 1 && z_pos == 1) {
+                for (let i = 0; i < positionAttribute.count; i += 6) {
+                    if (i == 6) {
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                        colors.push(colorGreen.r, colorGreen.g, colorGreen.b);
+                    } else {
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                    }
+                }
+            }
+            // (1 0 1)
+            else if (x_pos == 1 && y_pos == 0 && z_pos == 1) {
+                for (let i = 0; i < positionAttribute.count; i += 6) {
+                    if (i == 18) {
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                        colors.push(colorRed.r, colorRed.g, colorRed.b);
+                    } else {
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                        colors.push(colorBlack.r, colorBlack.g, colorBlack.b);
+                    }
+                }
+            }
         }
 
         piece.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
@@ -760,6 +805,25 @@ class Cubie {
         scene.add( cube );
 
     } // createPiece
+
+    /**
+     * Sets the color of a cubie with the appropriate individually colored
+     * faces.
+     */
+    // setFaces(x_pos, y_pos, z_pos, piece_type, color) {
+    //     if (piece_type == 'corner') {
+    //         switch (color) {
+    //             case 'red':
+                           
+    //         }
+    //     } else if (piece_type == 'edge') {
+            
+    //     } else if (piece_type == 'center') {
+
+    //     }
+    // }
+
+
 
     setX(new_x_pos) {
         this.x_pos = new_x_pos;
@@ -843,17 +907,15 @@ let cube16 = cube.createPiece(1, 2, 0, 'edge');
 let cube17 = cube.createPiece(0, 1, 2, 'edge');
 let cube18 = cube.createPiece(2, 1, 0, 'edge');
 let cube19 = cube.createPiece(0, 2, 1, 'edge');
-let cube22 = cube.createPiece(2, 1, 2, 'edge');
+let cube20 = cube.createPiece(2, 1, 2, 'edge');
 
-// CENTER CUBES (1 face)
-let cube20 = cube.createPiece(1, 1, 2, 'center');
-let cube21 = cube.createPiece(2, 1, 1, 'center');
-
-// (1 1 1) is the center-most cube
-
-
-// CENTER CUBES (1 face)
-//
+// CENTER CUBES (1 face) -- note (1 1 1) is the center-most cube (no faces)
+let cube21 = cube.createPiece(1, 1, 2, 'center');
+let cube22 = cube.createPiece(2, 1, 1, 'center');
+let cube23 = cube.createPiece(1, 2, 1, 'center');
+let cube24 = cube.createPiece(1, 1, 0, 'center');
+let cube25 = cube.createPiece(0, 1, 1, 'center');
+let cube26 = cube.createPiece(1, 0, 1, 'center');
 
 
 // fix camera position so we can see cube
