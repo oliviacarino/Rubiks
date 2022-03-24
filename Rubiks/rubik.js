@@ -20,8 +20,15 @@ document.body.appendChild( renderer.domElement );
  * There are 6 faces (made of 9 piece-faces) and 54 piece-faces
  * 
  * TODO make (child) classes for each Cubie (smaller cubes within the Rubiks cube)
- */
-class Cubie { 
+ */ 
+const colorRed = new THREE.Color(0xff0000);
+const colorWhite = new THREE.Color(0xffffff);
+const colorBlue = new THREE.Color(0x0000FF);
+const colorGreen = new THREE.Color(0x00FF00);
+const colorOrange = new THREE.Color(0xFFA500);
+const colorYellow = new THREE.Color(0xFFFF00);
+const colorBlack = new THREE.Color(0x000000);
+class Cubie {    
     //constructor(x_pos, y_pos, z_pos, face, color) {
     constructor(x_pos, y_pos, z_pos, colors) {
         this.x_pos = x_pos;
@@ -806,25 +813,6 @@ class Cubie {
 
     } // createPiece
 
-    /**
-     * Sets the color of a cubie with the appropriate individually colored
-     * faces.
-     */
-    // setFaces(x_pos, y_pos, z_pos, piece_type, color) {
-    //     if (piece_type == 'corner') {
-    //         switch (color) {
-    //             case 'red':
-                           
-    //         }
-    //     } else if (piece_type == 'edge') {
-            
-    //     } else if (piece_type == 'center') {
-
-    //     }
-    // }
-
-
-
     setX(new_x_pos) {
         this.x_pos = new_x_pos;
     } // setX
@@ -848,32 +836,6 @@ class Cubie {
     getZ() {
         return this.z_pos;
     } // getZ
-
-    /**
-     * Sets the Piece's type (corner, edge, or center).
-     * Helps with setting color of side(s) for each
-     * Piece (e.g., corner piece has 3 colors, edge
-     * has 2 colors, center has 1 color).
-     */
-    setPieceType(type) {
-        pieceType = type;
-        let corner = false;
-        let edge = false;
-        let center = false;
-
-        if (this.pieceType === 'corner') {
-            corner = true;
-        } else if (this.pieceType === 'edge') {
-            edge = true;
-        } else if (this.pieceType === 'center') {
-            center = true;
-        } // if
-
-    } // setPieceType
-
-    getPieceType() {
-        return this.pieceType;
-    } // getPieceType
 
 } // Piece
 
@@ -941,7 +903,7 @@ scene.add(light);
 const controls = new THREE.OrbitControls( camera, renderer.domElement );
 
 //controls.update() must be called after any manual changes to the camera's transform
-camera.position.set( 0, 20, 100 );
+camera.position.set( 100, 100, 100 );
 controls.update();
 
 ///////////////////////////////////////////////////////////////
